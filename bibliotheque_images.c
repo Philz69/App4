@@ -174,3 +174,24 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
     }
     return 0;
 }
+
+int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int lignes2, int colonnes2, int *p_lignes, int *p_colonnes)
+{
+    int buffer[MAX_HAUTEUR][MAX_LARGEUR];
+    for (int i = lignes1; i < lignes2; i++)
+    {
+        for (int j = colonnes1; j < colonnes2; j++)
+        {
+            buffer[i - lignes1][j - colonnes1] = matrice[i][j];
+        }
+    }
+    for (int i = 0; i < lignes2 - lignes1; i++)
+    {
+        for (int j = 0; j < colonnes2 - colonnes1; j++)
+        {
+            matrice[i][j]  = buffer[i][j];
+        }
+    }
+    (*p_lignes) = lignes2 - lignes1;
+    (*p_colonnes) = colonnes2 - colonnes1;
+}

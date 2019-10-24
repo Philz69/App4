@@ -94,19 +94,21 @@ int main()
 
     }
 
-    retour = pgm_creer_negatif(image1, lignes1, colonnes1, maxval);
+    retour = pgm_creer_negatif(image2, lignes1, colonnes1, maxval);
     if(!retour)
     {
         printf("Succes negatif\n");
-       pgm_creer_histogramme(image1, lignes1, colonnes1, histogramme) ;
+       pgm_creer_histogramme(image2, lignes1, colonnes1, histogramme) ;
             for (int i = 0; i < maxval + 1; i++)
             {
                 printf("%d|", histogramme[i]);
             }
 
     }
+    
+    pgm_extraire(image1,10,10,20,20, &lignes1, &colonnes1);
 
-    pgm_ecrire("test.pgm", image2,
+    pgm_ecrire("test.pgm", image1,
                lignes2, colonnes2,
                maxval, metadonnees);
 
