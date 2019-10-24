@@ -172,4 +172,5 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
            }
         }
     }
+    return 0;
 }

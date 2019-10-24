@@ -82,9 +82,22 @@ int main()
         }
     }
 
-    retour = pgm_eclaircir_noircir(image2, lignes1, colonnes1, maxval, 50);
+    retour = pgm_eclaircir_noircir(image1, lignes1, colonnes1, maxval, 50);
     if(!retour)
     {
+        printf("Succes eclaircir noircir \n");
+       pgm_creer_histogramme(image1, lignes1, colonnes1, histogramme) ;
+            for (int i = 0; i < maxval + 1; i++)
+            {
+                printf("%d|", histogramme[i]);
+            }
+
+    }
+
+    retour = pgm_creer_negatif(image1, lignes1, colonnes1, maxval);
+    if(!retour)
+    {
+        printf("Succes negatif\n");
        pgm_creer_histogramme(image1, lignes1, colonnes1, histogramme) ;
             for (int i = 0; i < maxval + 1; i++)
             {
