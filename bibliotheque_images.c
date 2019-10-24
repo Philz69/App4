@@ -68,9 +68,10 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-        fprintf(fptr, "#%s;%s;%s\n", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
-        fprintf(fptr, "P2\n");
-        fprintf(fptr, "%d %d\n%d\n", lignes, colonnes, maxval);
+        //fprintf(fptr, "#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+        fprintf(fptr, "P2 ");
+        fprintf(fptr, "%d %d ", lignes, colonnes);
+        fprintf(fptr, "%d ", lignes, colonnes, maxval);
 
 
 
@@ -80,7 +81,7 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         {
             fprintf(fptr, "%d ", matrice[i][j]);
         }
-        fprintf(fptr, "\n");
+        //fprintf(fptr, "\n");
     }
 
     fclose(fptr);
@@ -178,16 +179,16 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
 int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int lignes2, int colonnes2, int *p_lignes, int *p_colonnes)
 {
     int buffer[MAX_HAUTEUR][MAX_LARGEUR];
-    for (int i = lignes1; i < lignes2; i++)
+    for (int i = lignes1; i <= lignes2; i++)
     {
-        for (int j = colonnes1; j < colonnes2; j++)
+        for (int j = colonnes1; j <= colonnes2; j++)
         {
             buffer[i - lignes1][j - colonnes1] = matrice[i][j];
         }
     }
-    for (int i = 0; i < lignes2 - lignes1; i++)
+    for (int i = 0; i <= lignes2 - lignes1; i++)
     {
-        for (int j = 0; j < colonnes2 - colonnes1; j++)
+        for (int j = 0; j <= colonnes2 - colonnes1; j++)
         {
             matrice[i][j]  = buffer[i][j];
         }
