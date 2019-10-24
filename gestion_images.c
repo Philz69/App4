@@ -82,6 +82,17 @@ int main()
         }
     }
 
+    retour = pgm_eclaircir_noircir(image2, lignes1, colonnes1, maxval, 50);
+    if(!retour)
+    {
+       pgm_creer_histogramme(image1, lignes1, colonnes1, histogramme) ;
+            for (int i = 0; i < maxval + 1; i++)
+            {
+                printf("%d|", histogramme[i]);
+            }
+
+    }
+
     pgm_ecrire("test.pgm", image2,
                lignes2, colonnes2,
                maxval, metadonnees);

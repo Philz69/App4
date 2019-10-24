@@ -136,3 +136,40 @@ int pgm_couleur_preponderante(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes,
     }
     return preponderantePos;
 }
+int pgm_eclaircir_noircir(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int maxval, int valeur)
+{
+    for (int i = 0; i < lignes; i++)
+    {
+        for (int j = 0; j < colonnes; j++)
+        {
+           matrice[i][j] = matrice[i][j] + valeur;
+           if(matrice[i][j] < 0)
+           {
+               matrice[i][j] = 0;
+           }
+           else if(matrice[i][j] > maxval)
+           {
+               matrice[i][j] = maxval;
+           }
+        }
+    }
+    return 0;
+}
+int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int maxval)
+{
+    for (int i = 0; i < lignes; i++)
+    {
+        for (int j = 0; j < colonnes; j++)
+        {
+           matrice[i][j] = maxval - matrice[i][j];
+           if(matrice[i][j] < 0)
+           {
+               matrice[i][j] = 0;
+           }
+           else if(matrice[i][j] > maxval)
+           {
+               matrice[i][j] = maxval;
+           }
+        }
+    }
+}
