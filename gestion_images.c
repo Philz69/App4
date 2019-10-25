@@ -28,14 +28,19 @@ int main()
     printf("-> Debut!\n");
 
     // exemple d'appel de fonction
+    printf("\n%d\n", lignes1);
     retour = pgm_lire(nom, image1,
                       &lignes1, &colonnes1,
                       &maxval, &metadonnees);
 
+    printf("\n%d\n", lignes1);
     if (debug)
     {
         printf("%d, %d, %d", lignes1, colonnes1, maxval);
         printf("%s %s %s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+
+       if(debug)
+       {
         for (int i = 0; i < lignes1; i++)
         {
             for (int j = 0; j < colonnes1; j++)
@@ -43,6 +48,7 @@ int main()
                 printf("%d", image1[i][j]);
             }
         }
+       }
     }
     // exemple detraitement d'un code de retour (erreur ou reussite)
     printf("-> Retour: ");
@@ -63,7 +69,7 @@ int main()
     if (!retour)
     {
         printf("Succes histogramme\n");
-        if (!debug)
+        if (debug)
         {
             for (int i = 0; i < maxval + 1; i++)
             {
@@ -76,7 +82,7 @@ int main()
     if (retour > 0)
     {
         printf("Succes preponderante\n");
-        if (!debug)
+        if (debug)
         {
             printf("Valeur la plus commune: %d", retour);
         }
@@ -87,11 +93,13 @@ int main()
     {
         printf("Succes eclaircir noircir \n");
        pgm_creer_histogramme(image1, lignes1, colonnes1, histogramme) ;
+       if(debug)
+       {
             for (int i = 0; i < maxval + 1; i++)
             {
                 printf("%d|", histogramme[i]);
             }
-
+       }
     }
 
     retour = pgm_creer_negatif(image2, lignes1, colonnes1, maxval);
@@ -99,19 +107,23 @@ int main()
     {
         printf("Succes negatif\n");
        pgm_creer_histogramme(image2, lignes1, colonnes1, histogramme) ;
+       if(debug)
+       {
             for (int i = 0; i < maxval + 1; i++)
             {
                 printf("%d|", histogramme[i]);
             }
-
+       }
     }
     
     retour = pgm_lire(nom, image1,
                       &lignes1, &colonnes1,
                       &maxval, &metadonnees);
 
-    retour = pgm_extraire(image1,100,100,200,200, &lignes1, &colonnes1);
-    printf("\n%d\n",retour);
+    retour = pgm_copier(image1, lignes1, colonnes1, image2, &lignes2, &colonnes2);
+    retour = pgm_extraire(image1,100,100,150,150, &lignes1, &colonnes1);
+    //retour = pgm_sont_identiques(image1, lignes1, colonnes1, image2, lignes2, colonnes2);
+    //retour = pgm_pivoter90(image1, &lignes1, &colonnes1, 0);
     pgm_ecrire("extract.pgm", image1,
                lignes1, colonnes1,
                maxval, metadonnees);

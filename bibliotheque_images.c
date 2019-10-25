@@ -14,9 +14,9 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
 {
     char format[MAX_CHAINE];
 
-    (*p_lignes) = 0;
-    (*p_colonnes) = 0;
-    (*p_maxval) = 0;
+    *p_lignes = 0;
+    *p_colonnes = 0;
+    *p_maxval = 0;
 
     FILE *fptr;
     fptr = fopen(nom_fichier, "r");
@@ -39,7 +39,7 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-    fscanf(fptr, "%d %d %d", p_lignes, p_colonnes, p_maxval);
+    fscanf(fptr, "%d %d %d", p_colonnes, p_lignes, p_maxval);
 
     for (int i = 0; i < (*p_lignes); i++)
     {
@@ -68,12 +68,10 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-        //fprintf(fptr, "#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
-        fprintf(fptr, "P2 ");
-        fprintf(fptr, "%d %d ", lignes, colonnes);
-        fprintf(fptr, "%d ", lignes, colonnes, maxval);
-
-
+    //fprintf(fptr, "#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+    fprintf(fptr, "P2\n");
+    fprintf(fptr, "%d %d\n",colonnes, lignes);
+    fprintf(fptr, "%d\n", maxval);
 
     for (int i = 0; i < lignes; i++)
     {
@@ -81,7 +79,7 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         {
             fprintf(fptr, "%d ", matrice[i][j]);
         }
-        //fprintf(fptr, "\n");
+        fprintf(fptr, "\n");
     }
 
     fclose(fptr);
@@ -90,20 +88,20 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
 
 int pgm_copier(int matrice1[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int matrice2[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes2, int *p_colonnes2)
 {
-    (*p_lignes2) =  lignes1;
-    (*p_colonnes2) =  colonnes1;
+    (*p_lignes2) = lignes1;
+    (*p_colonnes2) = colonnes1;
 
     for (int i = 0; i < lignes1; i++)
     {
         for (int j = 0; j < colonnes1; j++)
         {
-             matrice2[i][j] = matrice1[i][j];
+            matrice2[i][j] = matrice1[i][j];
         }
     }
     return 0;
 }
 
-int pgm_creer_histogramme(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int histogramme[MAX_VALEUR+1]) 
+int pgm_creer_histogramme(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int histogramme[MAX_VALEUR + 1])
 {
 
     for (int i = 0; i < MAX_VALEUR + 1; i++)
@@ -122,18 +120,18 @@ int pgm_creer_histogramme(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int
 }
 
 int pgm_couleur_preponderante(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes)
-{   
+{
     int histogramme[MAX_VALEUR];
     pgm_creer_histogramme(matrice, lignes, colonnes, histogramme);
     int preponderantePos = 0;
     int preponderanteVal = 0;
     for (int i = 0; i < MAX_VALEUR; i++)
     {
-       if(histogramme[i] > preponderanteVal)
-       {
-           preponderantePos = i;
-           preponderanteVal = histogramme[i];
-       } 
+        if (histogramme[i] > preponderanteVal)
+        {
+            preponderantePos = i;
+            preponderanteVal = histogramme[i];
+        }
     }
     return preponderantePos;
 }
@@ -143,15 +141,15 @@ int pgm_eclaircir_noircir(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int
     {
         for (int j = 0; j < colonnes; j++)
         {
-           matrice[i][j] = matrice[i][j] + valeur;
-           if(matrice[i][j] < 0)
-           {
-               matrice[i][j] = 0;
-           }
-           else if(matrice[i][j] > maxval)
-           {
-               matrice[i][j] = maxval;
-           }
+            matrice[i][j] = matrice[i][j] + valeur;
+            if (matrice[i][j] < 0)
+            {
+                matrice[i][j] = 0;
+            }
+            else if (matrice[i][j] > maxval)
+            {
+                matrice[i][j] = maxval;
+            }
         }
     }
     return 0;
@@ -162,15 +160,15 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
     {
         for (int j = 0; j < colonnes; j++)
         {
-           matrice[i][j] = maxval - matrice[i][j];
-           if(matrice[i][j] < 0)
-           {
-               matrice[i][j] = 0;
-           }
-           else if(matrice[i][j] > maxval)
-           {
-               matrice[i][j] = maxval;
-           }
+            matrice[i][j] = maxval - matrice[i][j];
+            if (matrice[i][j] < 0)
+            {
+                matrice[i][j] = 0;
+            }
+            else if (matrice[i][j] > maxval)
+            {
+                matrice[i][j] = maxval;
+            }
         }
     }
     return 0;
@@ -178,7 +176,7 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
 
 int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int lignes2, int colonnes2, int *p_lignes, int *p_colonnes)
 {
-    if(lignes2 > (*p_lignes) || lignes1 > (*p_lignes) || colonnes1 > (*p_colonnes) || colonnes2 > (*p_colonnes))
+    if (lignes2 > (*p_lignes) || lignes1 > (*p_lignes) || colonnes1 > (*p_colonnes) || colonnes2 > (*p_colonnes))
     {
         return -1;
     }
@@ -190,14 +188,57 @@ int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonne
             buffer[i - lignes1][j - colonnes1] = matrice[i][j];
         }
     }
-    for (int i = 0; i <= lignes2 - lignes1; i++)
+    *p_lignes = lignes2 - lignes1;
+    *p_colonnes = colonnes2 - colonnes1;
+    for (int i = 0; i < *p_lignes; i++)
     {
-        for (int j = 0; j <= colonnes2 - colonnes1; j++)
+        for (int j = 0; j < *p_colonnes; j++)
         {
-            matrice[i][j]  = buffer[i][j];
+            matrice[i][j] = buffer[i][j];
         }
     }
-    (*p_lignes) = lignes2 - lignes1;
-    (*p_colonnes) = colonnes2 - colonnes1;
+    return 0;
+}
+int pgm_sont_identiques(int matrice1[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int matrice2[MAX_HAUTEUR][MAX_LARGEUR], int lignes2, int colonnes2)
+{
+    if (lignes1 != lignes2 || colonnes1 != colonnes2)
+    {
+        return 1;
+    }
+    for (int i = 0; i < lignes1; i++)
+    {
+        for (int j = 0; j < colonnes1; j++)
+        {
+            if (matrice1[i][j] != matrice2[i][j])
+            {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int sens)
+{
+    int buffer[MAX_HAUTEUR][MAX_LARGEUR];
+    int temp = 0;
+    for (int i = 0; i < *p_lignes; i++)
+    {
+        for (int j = 0; j < *p_colonnes; j++)
+        {
+             buffer[j][*p_lignes - i - 1]  = matrice[i][j];
+        }
+    }
+    temp = *p_lignes;
+    *p_lignes = *p_colonnes;
+    *p_colonnes = temp;
+
+    for (int i = 0; i < *p_lignes; i++)
+    {
+        for (int j = 0; j < *p_colonnes; j++)
+        {
+             matrice[i][j]  = buffer[i][j];
+        }
+    }
     return 0;
 }
