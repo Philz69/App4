@@ -134,6 +134,16 @@ int main()
                maxval, metadonnees);
 
     printf("-> Fin!\n");
+    ppm_lire("Sherbrooke_Frontenac_nuit.ppm", imageRGB1, &lignes1, &colonnes1, &maxval, &metadonnees);
+    printf("test");
 
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < colonnes1; j++)
+            {
+            printf("%d %d %d|",  imageRGB1[i][j].valeurR, imageRGB1[i][j].valeurG ,imageRGB1[i][j].valeurB);
+            }
+        }
+    ppm_ecrire("rgb.ppm", imageRGB1, lignes1, colonnes1, maxval, metadonnees);
     return 0;
 }

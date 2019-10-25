@@ -242,3 +242,77 @@ int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_c
     }
     return 0;
 }
+
+int ppm_lire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int *p_maxval, struct MetaData *p_metadonnees)
+{
+    char format[MAX_CHAINE];
+
+    *p_lignes = 0;
+    *p_colonnes = 0;
+    *p_maxval = 0;
+
+    FILE *fptr;
+    fptr = fopen(nom_fichier, "r");
+
+    if (fptr == NULL)
+    {
+        fclose(fptr);
+        return -1;
+    }
+
+    /*if (fgetc(fptr) == "#")
+    {
+        fscanf(fptr, "#%s;%s;%s", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
+    }*/
+
+    fscanf(fptr, "%s", format);
+    if (strcmp(format, "P3"))
+    {
+        fclose(fptr);
+        return -1;
+    }
+
+    fscanf(fptr, "%d %d %d", p_colonnes, p_lignes, p_maxval);
+
+    for (int i = 0; i < (*p_lignes); i++)
+    {
+        for (int j = 0; j < (*p_colonnes); j++)
+        {
+            fscanf(fptr, "%d %d %d", &matrice[i][j].valeurR, &matrice[i][j].valeurG, &matrice[i][j].valeurB );
+        }
+    }
+
+    fclose(fptr);
+    return OK;
+}
+
+int ppm_ecrire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int maxval, struct MetaData metadonnees)
+{
+    char format[MAX_CHAINE];
+
+    FILE *fptr;
+    fptr = fopen(nom_fichier, "w");
+
+    if (fptr == NULL)
+    {
+        fclose(fptr);
+        return -1;
+    }
+
+    //fprintf(fptr, "#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+    fprintf(fptr, "P3\n");
+    fprintf(fptr, "%d %d\n",colonnes, lignes);
+    fprintf(fptr, "%d\n", maxval);
+
+    for (int i = 0; i < lignes; i++)
+    {
+        for (int j = 0; j < colonnes; j++)
+        {
+            fprintf(fptr, "%d %d %d ",  matrice[i][j].valeurR, matrice[i][j].valeurG ,matrice[i][j].valeurB);
+        }
+        fprintf(fptr, "\n");
+    }
+
+    fclose(fptr);
+    return OK;
+}
