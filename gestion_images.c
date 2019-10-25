@@ -110,8 +110,9 @@ int main()
                       &lignes1, &colonnes1,
                       &maxval, &metadonnees);
 
-    pgm_extraire(image1,100,100,200,200, &lignes1, &colonnes1);
-    pgm_ecrire("test.pgm", image1,
+    retour = pgm_extraire(image1,100,100,200,200, &lignes1, &colonnes1);
+    printf("\n%d\n",retour);
+    pgm_ecrire("extract.pgm", image1,
                lignes1, colonnes1,
                maxval, metadonnees);
 
