@@ -102,6 +102,7 @@ int main()
        }
     }
 
+    retour = pgm_copier(image1, lignes1, colonnes1, image2, &lignes2, &colonnes2);
     retour = pgm_creer_negatif(image2, lignes1, colonnes1, maxval);
     if(!retour)
     {
@@ -115,13 +116,17 @@ int main()
             }
        }
     }
-    
-    retour = pgm_lire(nom, image1,
-                      &lignes1, &colonnes1,
-                      &maxval, &metadonnees);
 
     retour = pgm_copier(image1, lignes1, colonnes1, image2, &lignes2, &colonnes2);
-    retour = pgm_extraire(image1,100,100,150,150, &lignes1, &colonnes1);
+    retour = pgm_eclaircir_noircir(image2, lignes2, colonnes2, maxval, 50);
+    pgm_ecrire("noircir.pgm", image2, lignes2, colonnes2, maxval, metadonnees);
+    retour = pgm_copier(image1, lignes1, colonnes1, image2, &lignes2, &colonnes2);
+    retour = pgm_creer_negatif(image2, lignes1, colonnes1, maxval);
+    pgm_ecrire("negatif.pgm", image2, lignes2, colonnes2, maxval, metadonnees);
+    retour = pgm_copier(image1, lignes1, colonnes1, image2, &lignes2, &colonnes2);
+    retour = pgm_extraire(image2,100,100,150,150, &lignes2, &colonnes2);
+    pgm_ecrire("extraire.pgm", image2, lignes2, colonnes2, maxval, metadonnees);
+
     //retour = pgm_sont_identiques(image1, lignes1, colonnes1, image2, lignes2, colonnes2);
     //retour = pgm_pivoter90(image1, &lignes1, &colonnes1, 0);
     pgm_ecrire("extract.pgm", image1,
