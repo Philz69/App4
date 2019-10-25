@@ -136,6 +136,7 @@ int main()
     printf("-> Fin!\n");
     ppm_lire("Sherbrooke_Frontenac_nuit.ppm", imageRGB1, &lignes1, &colonnes1, &maxval, &metadonnees);
     ppm_copier(imageRGB1, lignes1, colonnes1, imageRGB2, &lignes2, &colonnes2);
+    ppm_pivoter90(imageRGB2, &lignes2, &colonnes2, 1);
     ppm_ecrire("rgb.ppm", imageRGB2, lignes2, colonnes2, maxval, metadonnees);
     return 0;
 }

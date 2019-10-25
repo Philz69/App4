@@ -222,11 +222,24 @@ int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_c
 {
     int buffer[MAX_HAUTEUR][MAX_LARGEUR];
     int temp = 0;
+    int newI;
+    if(sens != 0 && sens != 1)
+    {
+        return -1;
+    }
     for (int i = 0; i < *p_lignes; i++)
     {
         for (int j = 0; j < *p_colonnes; j++)
         {
-             buffer[j][*p_lignes - i - 1]  = matrice[i][j];
+            if(!sens) 
+            {
+                newI = *p_lignes - i -1;
+            }
+            else
+            {
+                newI = i;
+            }
+             buffer[j][newI]  = matrice[i][j];
         }
     }
     temp = *p_lignes;
@@ -346,6 +359,47 @@ int ppm_sont_identiques(struct RGB matrice1[MAX_HAUTEUR][MAX_LARGEUR], int ligne
             {
                 return 1;
             }
+        }
+    }
+    return 0;
+}
+int ppm_pivoter90(struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int sens) 
+{
+    struct RGB buffer[MAX_HAUTEUR][MAX_LARGEUR];
+    int temp = 0;
+    int newI = 0;
+    if(sens != 0 && sens != 1)
+    {
+        return -1;
+    }
+    for (int i = 0; i < *p_lignes; i++)
+    {
+        for (int j = 0; j < *p_colonnes; j++)
+        {
+            if(!sens) 
+            {
+                newI = *p_lignes - i -1;
+            }
+            else
+            {
+                newI = i;
+            }
+             buffer[j][newI].valeurR  = matrice[i][j].valeurR;
+             buffer[j][newI].valeurG = matrice[i][j].valeurG;
+             buffer[j][newI].valeurB  = matrice[i][j].valeurB;
+        }
+    }
+    temp = *p_lignes;
+    *p_lignes = *p_colonnes;
+    *p_colonnes = temp;
+
+    for (int i = 0; i < *p_lignes; i++)
+    {
+        for (int j = 0; j < *p_colonnes; j++)
+        {
+            matrice[i][j].valeurR = buffer[i][j].valeurR;
+            matrice[i][j].valeurG = buffer[i][j].valeurG;
+            matrice[i][j].valeurB = buffer[i][j].valeurB;
         }
     }
     return 0;
