@@ -27,19 +27,31 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-    /*if (fgetc(fptr) == "#")
+    if (fgetc(fptr) == '#')
     {
-        fscanf(fptr, "#%s;%s;%s", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
-    }*/
+        fscanf(fptr, "%[^; ] %[^; ] %[^; ]", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
+    }
+    else
+    {
+        rewind(fptr);
+    }
+     
 
     fscanf(fptr, "%s", format);
-    if (strcmp(format, "P2"))
+    if(format[0] == 'P' && format[1] == '2' && format[3] == '\0')
     {
+
         fclose(fptr);
         return -1;
     }
 
     fscanf(fptr, "%d %d %d", p_colonnes, p_lignes, p_maxval);
+
+
+    if(*p_colonnes > MAX_LARGEUR || *p_colonnes > MAX_HAUTEUR)
+    {
+        return ERREUR_TAILLE;
+    }
 
     for (int i = 0; i < (*p_lignes); i++)
     {

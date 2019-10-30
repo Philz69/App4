@@ -8,6 +8,7 @@ Description: Fichier de distribution pour GEN145.
 
 #include <stdio.h>
 #include "bibliotheque_images.h"
+#include <AutoValidation.h>
 
 int image1[MAX_HAUTEUR][MAX_LARGEUR];
 int image2[MAX_HAUTEUR][MAX_LARGEUR];
@@ -20,7 +21,7 @@ int main()
     int lignes2, colonnes2;
     int maxval;
     int histogramme[MAX_VALEUR + 1];
-    char nom[MAX_CHAINE] = "Sherbrooke_Frontenac_nuit.pgm";
+    char nom[MAX_CHAINE] = "Sherbrooke_Frontenac_nuit.ppm";
     struct MetaData metadonnees;
     int debug = 0;
     int retour;
@@ -34,10 +35,10 @@ int main()
                       &maxval, &metadonnees);
 
     printf("\n%d\n", lignes1);
+    printf("%s %s %s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     if (debug)
     {
         printf("%d, %d, %d", lignes1, colonnes1, maxval);
-        printf("%s %s %s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
 
        if(debug)
        {
