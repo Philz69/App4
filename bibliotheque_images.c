@@ -413,7 +413,7 @@ int ppm_ecrire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-    //fprintf(fptr, "%s %s %s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+    fprintf(fptr, "#%s;%s;%s\n", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     fprintf(fptr, "P3\n");
     fprintf(fptr, "%d %d\n", colonnes, lignes);
     fprintf(fptr, "%d\n", maxval);
@@ -468,7 +468,7 @@ int ppm_pivoter90(struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, i
 {
     struct RGB buffer[MAX_HAUTEUR][MAX_LARGEUR];
     int temp = 0;
-    int newI = 0;
+    int newI, newJ;
     if (sens != 0 && sens != 1)
     {
         return -1;
@@ -477,17 +477,19 @@ int ppm_pivoter90(struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, i
     {
         for (int j = 0; j < *p_colonnes; j++)
         {
-            if (sens = 1)
+            if (sens)
             {
                 newI = *p_lignes - i - 1;
+                newJ = j;
             }
             else
             {
                 newI = i;
+                newJ = *p_colonnes - j - 1;
             }
-            buffer[j][newI].valeurR = matrice[i][j].valeurR;
-            buffer[j][newI].valeurG = matrice[i][j].valeurG;
-            buffer[j][newI].valeurB = matrice[i][j].valeurB;
+            buffer[newJ][newI].valeurR = matrice[i][j].valeurR;
+            buffer[newJ][newI].valeurG = matrice[i][j].valeurG;
+            buffer[newJ][newI].valeurB = matrice[i][j].valeurB;
         }
     }
     temp = *p_lignes;
