@@ -21,7 +21,6 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
 
     FILE *fptr;
     fptr = fopen(nom_fichier, "r");
-    printf("%s", nom_fichier);
     if (fptr == NULL)
     {
         fclose(fptr);
@@ -34,7 +33,6 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         for(int i = 0; i < MAX_CHAINE; i++)
         {
             buffer = fgetc(fptr);
-            printf("%c|", buffer);
             if(buffer == ';' || buffer == '\n' || buffer == '\r')
             {
                 (*p_metadonnees).auteur[i] = '\0';
@@ -82,7 +80,6 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
      
 
     fscanf(fptr, "%s", format);
-    printf("%s", format);
     if(format[0] != 'P' || format[1] != '2' || format[2] != '\0')
     {
 
@@ -92,8 +89,6 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
   
 
     fscanf(fptr, "%d %d %d", p_colonnes, p_lignes, p_maxval);
-
-    printf("Scanned size");
 
     if(*p_colonnes > MAX_LARGEUR || *p_lignes > MAX_HAUTEUR)
     {
@@ -127,7 +122,8 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-    //fprintf(fptr, "#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+    //printf("#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
+    fprintf(fptr, "#%s;%s;%s\n", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     fprintf(fptr, "P2\n");
     fprintf(fptr, "%d %d\n",colonnes, lignes);
     fprintf(fptr, "%d\n", maxval);
@@ -235,7 +231,7 @@ int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int col
 
 int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int lignes2, int colonnes2, int *p_lignes, int *p_colonnes)
 {
-    if (lignes2 > (*p_lignes) || lignes1 > (*p_lignes) || colonnes1 > (*p_colonnes) || colonnes2 > (*p_colonnes))
+    if (lignes2 >= (*p_lignes) || lignes1 >= (*p_lignes) || colonnes1 >= (*p_colonnes) || colonnes2 >= (*p_colonnes))
     {
         return -1;
     }
@@ -247,8 +243,8 @@ int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonne
             buffer[i - lignes1][j - colonnes1] = matrice[i][j];
         }
     }
-    *p_lignes = lignes2 - lignes1;
-    *p_colonnes = colonnes2 - colonnes1;
+    *p_lignes = lignes2 - lignes1 + 1;
+    *p_colonnes = colonnes2 - colonnes1 + 1;
     for (int i = 0; i < *p_lignes; i++)
     {
         for (int j = 0; j < *p_colonnes; j++)
@@ -256,6 +252,7 @@ int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonne
             matrice[i][j] = buffer[i][j];
         }
     }
+    printf("\n%d %d | %d %d | %d %d\n", lignes1, colonnes1, lignes2, colonnes2, *p_lignes, *p_colonnes);
     return 0;
 }
 int pgm_sont_identiques(int matrice1[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int matrice2[MAX_HAUTEUR][MAX_LARGEUR], int lignes2, int colonnes2)
@@ -281,7 +278,7 @@ int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_c
 {
     int buffer[MAX_HAUTEUR][MAX_LARGEUR];
     int temp = 0;
-    int newI;
+    int newI, newJ;
     if(sens != 0 && sens != 1)
     {
         return -1;
@@ -293,12 +290,14 @@ int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_c
             if(sens) 
             {
                 newI = *p_lignes - i -1;
+                newJ = j;
             }
             else
             {
                 newI = i;
+                newJ = *p_colonnes - j - 1;
             }
-             buffer[j][newI]  = matrice[i][j];
+             buffer[newJ][newI]  = matrice[i][j];
         }
     }
     temp = *p_lignes;
@@ -318,7 +317,7 @@ int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_c
 int ppm_lire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int *p_maxval, struct MetaData *p_metadonnees)
 {
     char format[MAX_CHAINE];
-
+    char buffer;
     *p_lignes = 0;
     *p_colonnes = 0;
     *p_maxval = 0;
@@ -331,20 +330,66 @@ int ppm_lire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], i
         fclose(fptr);
         return ERREUR_FICHIER;
     }
-
-    /*if (fgetc(fptr) == "#")
+if (fgetc(fptr) == '#')
     {
-        fscanf(fptr, "#%s;%s;%s", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
-    }*/
+        //fscanf(fptr, "%[^;\n] %[^;\n] %[^;\n]", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
+        for(int i = 0; i < MAX_CHAINE; i++)
+        {
+            buffer = fgetc(fptr);
+            if(buffer == ';' || buffer == '\n' || buffer == '\r')
+            {
+                (*p_metadonnees).auteur[i] = '\0';
+                break;
+            }
+            else
+            {
+                (*p_metadonnees).auteur[i] = buffer;
+            }
+
+        }
+        for(int i = 0; i < MAX_CHAINE; i++)
+        {
+            buffer = fgetc(fptr);
+            if(buffer == ';' || buffer == '\n'|| buffer == '\r')
+            {
+                (*p_metadonnees).dateCreation[i] = '\0';
+                break;
+            }
+            else
+            {
+                (*p_metadonnees).dateCreation[i] = buffer;
+            }
+
+        }
+        for(int i = 0; i < MAX_CHAINE; i++)
+        {
+            buffer = fgetc(fptr);
+            if(buffer == ';' || buffer == '\n'|| buffer == '\r')
+            {
+                (*p_metadonnees).lieuCreation[i] = '\0';
+                break;
+            }
+            else
+            {
+                (*p_metadonnees).lieuCreation[i] = buffer;
+            }
+
+        }
+    }
 
     fscanf(fptr, "%s", format);
-    if (strcmp(format, "P3"))
+    if(format[0] != 'P' || format[1] != '3' || format[2] != '\0')
     {
+
         fclose(fptr);
-        return ERREUR_TAILLE;
+        return ERREUR_FORMAT;
     }
 
     fscanf(fptr, "%d %d %d", p_colonnes, p_lignes, p_maxval);
+    if(*p_colonnes > MAX_LARGEUR || *p_lignes > MAX_HAUTEUR)
+    {
+        return ERREUR_TAILLE;
+    }
 
     for (int i = 0; i < (*p_lignes); i++)
     {
