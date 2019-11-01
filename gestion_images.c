@@ -8,7 +8,7 @@ Description: Fichier de distribution pour GEN145.
 
 #include <stdio.h>
 #include "bibliotheque_images.h"
-#include <AutoValidation.h>
+#include "AutoValidation.h"
 
 int image1[MAX_HAUTEUR][MAX_LARGEUR];
 int image2[MAX_HAUTEUR][MAX_LARGEUR];
@@ -17,11 +17,12 @@ struct RGB imageRGB2[MAX_HAUTEUR][MAX_LARGEUR];
 
 int main()
 {
-    int lignes1, colonnes1;
+    AutoValidation();
+    /*int lignes1, colonnes1;
     int lignes2, colonnes2;
     int maxval;
     int histogramme[MAX_VALEUR + 1];
-    char nom[MAX_CHAINE] = "Sherbrooke_Frontenac_nuit.ppm";
+    char nom[MAX_CHAINE] = "images/validation.pgm";
     struct MetaData metadonnees;
     int debug = 0;
     int retour;
@@ -29,12 +30,11 @@ int main()
     printf("-> Debut!\n");
 
     // exemple d'appel de fonction
-    printf("\n%d\n", lignes1);
     retour = pgm_lire(nom, image1,
                       &lignes1, &colonnes1,
                       &maxval, &metadonnees);
 
-    printf("\n%d\n", lignes1);
+    printf("\n%d %d %d\n", lignes1, colonnes1);
     printf("%s %s %s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     if (debug)
     {
@@ -47,6 +47,7 @@ int main()
             for (int j = 0; j < colonnes1; j++)
             {
                 printf("%d", image1[i][j]);
+               
             }
         }
        }
@@ -138,6 +139,6 @@ int main()
     ppm_lire("Sherbrooke_Frontenac_nuit.ppm", imageRGB1, &lignes1, &colonnes1, &maxval, &metadonnees);
     ppm_copier(imageRGB1, lignes1, colonnes1, imageRGB2, &lignes2, &colonnes2);
     ppm_pivoter90(imageRGB2, &lignes2, &colonnes2, 1);
-    ppm_ecrire("rgb.ppm", imageRGB2, lignes2, colonnes2, maxval, metadonnees);
+    ppm_ecrire("rgb.ppm", imageRGB2, lignes2, colonnes2, maxval, metadonnees);*/
     return 0;
 }

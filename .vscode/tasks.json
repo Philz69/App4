@@ -8,18 +8,19 @@
         {
             "type": "shell",
             "label": "gcc.exe build app4",
-            "command": "/usr/bin/gcc",
+            "command": "C:\\MinGW\\bin/gcc.exe",
             "args": [
-                "-o",
-                "${fileDirname}/gestion_images",
                 "-static",
                 "${fileDirname}/gestion_images.c",
                 "${fileDirname}/bibliotheque_images.c",
-                "-l",
-                "${fileDirname}/libAutoValidation.a"
+                "-L",
+                "${fileDirname}",
+                "-lAutoValidation",
+                "-o",
+                "${fileDirname}/gestion_images"
             ],
             "options": {
-                "cwd":"/usr/bin" 
+                "cwd":"C:\\MinGW\\bin" 
             },
             "problemMatcher": [
                 "$gcc"
