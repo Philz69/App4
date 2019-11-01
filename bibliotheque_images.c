@@ -29,7 +29,6 @@ int pgm_lire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
 
     if (fgetc(fptr) == '#')
     {
-        //fscanf(fptr, "%[^;\n] %[^;\n] %[^;\n]", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
         for (int i = 0; i < MAX_CHAINE; i++)
         {
             buffer = fgetc(fptr);
@@ -106,7 +105,6 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
                int lignes, int colonnes,
                int maxval, struct MetaData metadonnees)
 {
-    //char format[MAX_CHAINE];
 
     FILE *fptr;
     fptr = fopen(nom_fichier, "w");
@@ -117,7 +115,6 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
         return -1;
     }
 
-    //printf("#%s;%s;%s", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     fprintf(fptr, "#%s;%s;%s\n", metadonnees.auteur, metadonnees.dateCreation, metadonnees.lieuCreation);
     fprintf(fptr, "P2\n");
     fprintf(fptr, "%d %d\n", colonnes, lignes);
@@ -327,7 +324,6 @@ int ppm_lire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], i
     }
     if (fgetc(fptr) == '#')
     {
-        //fscanf(fptr, "%[^;\n] %[^;\n] %[^;\n]", (*p_metadonnees).auteur, (*p_metadonnees).dateCreation, (*p_metadonnees).lieuCreation);
         for (int i = 0; i < MAX_CHAINE; i++)
         {
             buffer = fgetc(fptr);
@@ -372,7 +368,6 @@ int ppm_lire(char nom_fichier[], struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], i
     {
         rewind(fptr);
     }
-    
 
     fscanf(fptr, "%s", format);
     if (format[0] != 'P' || format[1] != '3' || format[2] != '\0')
